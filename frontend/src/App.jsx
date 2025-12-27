@@ -7,14 +7,16 @@ import Register from './pages/Register'
 import Navbar from './pages/Navbar'
 import Footer from './pages/Footer'
 import Layout from './Layout'
+import CreateEquipment from './pages/Equipment/CreateEquipment'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <Layout>
-      </Layout>
+      {/* <Layout> */}
+        <CreateEquipment></CreateEquipment>
+      {/* </Layout> */}
     </>
   )
 }
