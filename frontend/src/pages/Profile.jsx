@@ -1,86 +1,98 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import Swal from "sweetalert2";
-import { FaEnvelope, FaUser, FaCalendarAlt, FaEdit } from "react-icons/fa";
+import { FaEnvelope, FaUser, FaBriefcase, FaIdCard, FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
-  const [profileData, setProfileData] = useState(null);
 
-  useEffect(() => {
-    if (!user) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "User not logged in",
-      });
-      return;
-    }
-    setProfileData(user);
-  }, [user]);
-
-  if (!profileData) return null;
+  if (!user) return (
+    <div className="min-h-screen flex items-center justify-center text-[#702963]">
+      <div className="animate-pulse font-semibold">Loading Profile...</div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-5xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden">
-        {/* Header Banner */}
-        <div className="bg-gradient-to-r from-blue-400 to-indigo-300 h-32 relative">
-          <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full border-4 border-white overflow-hidden shadow-lg">
-            <img
-              src={`https://ui-avatars.com/api/?name=${profileData.username}&background=60a5fa&color=fff&size=128`}
-              alt="User Avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 font-sans">
+      <div className="max-w-4xl mx-auto">
+        {/* Back Button */}
+        <Link to={user.role === 'admin' ? "/admin/dashboard" : "/equipment"} className="inline-flex items-center gap-2 text-gray-500 hover:text-[#702963] mb-6 transition-colors">
+            <FaArrowLeft /> Back to Dashboard
+        </Link>
 
-        {/* User Info */}
-        <div className="pt-20 pb-10 px-8 text-center md:text-left">
-          <h2 className="text-3xl font-bold text-gray-800">
-            {profileData.username}
-          </h2>
-          <p className="text-gray-500 mt-1 flex items-center justify-center md:justify-start gap-2">
-            <FaEnvelope /> {profileData.email}
-          </p>
-          <p className="text-gray-500 mt-2 flex items-center justify-center md:justify-start gap-2">
-            <FaCalendarAlt /> Member since:{" "}
-            {new Date(profileData.createdAt).toLocaleDateString()}
-          </p>
-        </div>
+        <div className="bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-200">
+            {/* Header Banner - Primary Purple */}
+            <div className="bg-[#702963] h-40 relative">
+            <div className="absolute -bottom-16 left-8 w-32 h-32 rounded-full border-4 border-white overflow-hidden shadow-lg bg-gray-100">
+                {/* Dynamic Avatar */}
+                <img
+                src={`https://ui-avatars.com/api/?name=${user.full_name || 'User'}&background=702963&color=fff&size=128`}
+                alt="User Avatar"
+                className="w-full h-full object-cover"
+                />
+            </div>
+            </div>
 
-        {/* Profile Details Cards */}
-        <div className="px-8 pb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 border rounded-2xl shadow hover:shadow-lg transition bg-white">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-2">
-              <FaUser /> Account Info
-            </h3>
-            <p>
-              <span className="font-semibold">Username:</span>{" "}
-              {profileData.username}
-            </p>
-            <p>
-              <span className="font-semibold">Email:</span> {profileData.email}
-            </p>
-          </div>
+            {/* User Headings */}
+            <div className="pt-20 pb-8 px-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                <h2 className="text-3xl font-bold text-gray-800">{user.full_name || "Admin User"}</h2>
+                <div className="flex items-center gap-2 mt-2">
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide 
+                    ${user.role === 'admin' ? 'bg-purple-100 text-[#702963]' : 'bg-blue-100 text-blue-700'}`}>
+                    {user.role || "User"}
+                    </span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide 
+                    ${user.account_status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                    {user.account_status || "Active"}
+                    </span>
+                </div>
+                </div>
+            </div>
+            
+            <hr className="my-8 border-gray-100" />
 
-          <div className="p-6 border rounded-2xl shadow hover:shadow-lg transition bg-white">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-2">
-              Recent Activity
-            </h3>
-            <ul className="list-disc pl-5 text-gray-600 space-y-1">
-              <li>Logged in today</li>
-              <li>Updated profile picture</li>
-              <li>Changed password</li>
-            </ul>
-          </div>
-        </div>
+            {/* Details Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Personal Info Card */}
+                <div className="p-6 border border-gray-200 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-md transition-all duration-300">
+                <h3 className="text-lg font-bold text-[#702963] mb-4 flex items-center gap-2">
+                    <FaUser /> Personal Details
+                </h3>
+                <div className="space-y-3">
+                    <div className="flex items-center gap-3 text-gray-600">
+                    <FaEnvelope className="text-gray-400" />
+                    <span className="font-medium text-gray-800">{user.email || "No Email Provided"}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-gray-600">
+                    <FaIdCard className="text-gray-400" />
+                    <span>User ID: <span className="font-mono text-gray-800">#{user.user_id || user.id || "000"}</span></span>
+                    </div>
+                </div>
+                </div>
 
-        {/* Edit Profile Button */}
-        <div className="px-8 pb-10 flex justify-center md:justify-end">
-          <button className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 shadow-md transition">
-            <FaEdit /> Edit Profile
-          </button>
+                {/* Work Info Card */}
+                <div className="p-6 border border-gray-200 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-md transition-all duration-300">
+                <h3 className="text-lg font-bold text-[#702963] mb-4 flex items-center gap-2">
+                    <FaBriefcase /> System Role
+                </h3>
+                <div className="space-y-3">
+                    <p className="text-gray-600 text-sm">
+                    Current Authorization Level:
+                    </p>
+                    <div className="font-medium text-gray-800 text-lg">
+                    {(user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : "Staff")}
+                    </div>
+                    <p className="text-xs text-gray-400 mt-2">
+                    *Permissions are managed by the System Administrator.
+                    </p>
+                </div>
+                </div>
+
+            </div>
+            </div>
         </div>
       </div>
     </div>
