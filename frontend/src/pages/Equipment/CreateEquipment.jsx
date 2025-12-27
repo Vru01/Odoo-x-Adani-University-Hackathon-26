@@ -1,228 +1,189 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { FiTool, FiCheck, FiLoader, FiAlertCircle, FiChevronDown } from "react-icons/fi";
 
 const CreateEquipment = () => {
-  const [equipment, setEquipment] = useState({
-    name: "",
-    serialNumber: "",
-    category: "",
-    maintenanceTeam: "",
-    technician: "",
-    purchaseDate: "",
-    warrantyDate: "",
+  // 1. FORM STATE
+  const [formData, setFormData] = useState({
+    name: "Samsung Monitor 15\"",
+    category: "Monitors",
+    company: "My Company (San Francisco)",
+    usedBy: "Employee",
+    maintenanceTeam: "Internal Maintenance",
+    assignedDate: "2025-12-24",
+    technician: "Mitchell Admin",
+    employee: "Abigail Peterson",
+    scrapDate: "",
     location: "",
-    status: "Active",
+    workCenter: "",
+    description: ""
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState({ type: "", message: "" });
+
+  // 2. HANDLE INPUT CHANGES
   const handleChange = (e) => {
-    setEquipment({ ...equipment, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isFormValid =
-    equipment.name &&
-    equipment.serialNumber &&
-    equipment.category &&
-    equipment.maintenanceTeam;
-
-  const handleSubmit = (e) => {
+  // 3. SUBMIT TO BACKEND
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setStatus({ type: "", message: "" });
 
-    console.log("Equipment Created:", equipment);
-
-    alert("Equipment created successfully ✅");
-
-    // Reset form (optional)
-    setEquipment({
-      name: "",
-      serialNumber: "",
-      category: "",
-      maintenanceTeam: "",
-      technician: "",
-      purchaseDate: "",
-      warrantyDate: "",
-      location: "",
-      status: "Active",
-    });
+    try {
+      // Simulating API POST Request
+      // In production: await axios.post('/api/equipment', formData);
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // Fake delay
+      
+      setStatus({ type: "success", message: "Equipment successfully synchronized with registry." });
+      console.log("Payload Sent:", formData);
+    } catch (error) {
+      setStatus({ type: "error", message: "Network error: Unable to save equipment data." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-10">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100">
+    <div className="relative min-h-screen w-full flex items-center justify-center p-6 bg-[#F8F9FC] overflow-hidden font-sans">
+      {/* GLOW EFFECTS */}
+      <div className="absolute top-[20%] right-[5%] w-[500px] h-[500px] bg-[#702963]/5 rounded-full blur-[120px]" />
+      <div className="absolute bottom-[5%] left-[5%] w-[400px] h-[400px] bg-blue-400/5 rounded-full blur-[100px]" />
 
-        {/* HEADER */}
-        <div className="px-6 py-5 border-b">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Create New Equipment
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Add and manage company assets for maintenance tracking
-          </p>
+      <form 
+        onSubmit={handleSubmit}
+        className="relative z-10 w-full max-w-5xl backdrop-blur-2xl bg-white/70 border border-white rounded-[2.5rem] shadow-[0_30px_60px_rgba(112,41,99,0.1)] overflow-hidden"
+      >
+        
+        {/* HEADER BAR */}
+        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-white/40">
+          <div className="flex items-center gap-4">
+            <div className="px-6 py-1.5 bg-gradient-to-r from-[#702963] to-[#9d3a8a] rounded-xl text-white text-xs font-black uppercase tracking-widest shadow-md">
+              New
+            </div>
+            <span className="text-xl font-bold tracking-tight text-gray-800">Equipment Registry</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* STATUS NOTIFICATION */}
+            {status.message && (
+              <div className={`flex items-center gap-2 text-[10px] font-black uppercase px-4 py-2 rounded-lg ${
+                status.type === "success" ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+              }`}>
+                {status.type === "success" ? <FiCheck /> : <FiAlertCircle />}
+                {status.message}
+              </div>
+            )}
+
+            <div className="flex items-center gap-3 bg-white border border-gray-100 px-4 py-2 rounded-xl shadow-sm">
+              <FiTool className="text-[#702963] text-lg" />
+              <div className="text-left leading-none">
+                <p className="text-[9px] text-gray-400 font-black uppercase mb-1">Active Tasks</p>
+                <p className="text-sm font-black text-gray-800">0</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* FORM */}
-        <form onSubmit={handleSubmit} className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* FORM BODY */}
+        <div className="p-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
+            
+            {/* LEFT COLUMN */}
+            <div className="space-y-10">
+              {[
+                { label: "Name?", name: "name", type: "text" },
+                { label: "Category?", name: "category", type: "text" },
+                { label: "Company?", name: "company", type: "text" },
+                { label: "Used By?", name: "usedBy", type: "select", options: ["Employee", "Other"] },
+                { label: "Maintenance Team?", name: "maintenanceTeam", type: "text" },
+                { label: "Assigned Date?", name: "assignedDate", type: "date" }
+              ].map((field) => (
+                <div key={field.name} className="flex items-end gap-4 border-b border-gray-200 pb-2 focus-within:border-[#702963] transition-colors">
+                  <label className="text-[11px] font-black text-gray-400 w-44 uppercase tracking-tighter">{field.label}</label>
+                  
+                  {field.type === "select" ? (
+                    <div className="flex-1 relative">
+                      <select 
+                        name={field.name}
+                        value={formData[field.name]}
+                        onChange={handleChange}
+                        className="w-full bg-transparent outline-none appearance-none text-sm font-bold text-gray-800 cursor-pointer"
+                      >
+                        {field.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                      </select>
+                      <FiChevronDown className="absolute right-0 bottom-1 text-gray-300 pointer-events-none" />
+                    </div>
+                  ) : (
+                    <input 
+                      type={field.type}
+                      name={field.name}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                      className="bg-transparent outline-none flex-1 text-sm font-bold text-gray-800" 
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
 
-          {/* Equipment Name */}
-          <div>
-            <label className="label">Equipment Name *</label>
-            <input
-              type="text"
-              name="name"
-              value={equipment.name}
-              onChange={handleChange}
-              placeholder="CNC Machine / Printer"
-              className="input input-bordered w-full"
-              required
-            />
+            {/* RIGHT COLUMN */}
+            <div className="space-y-10">
+              {[
+                { label: "Technician?", name: "technician" },
+                { label: "Employee?", name: "employee" },
+                { label: "Scrap Date?", name: "scrapDate" },
+                { label: "Used in location?", name: "location" },
+                { label: "Work Center?", name: "workCenter" }
+              ].map((field) => (
+                <div key={field.name} className="flex items-end gap-4 border-b border-gray-200 pb-2 focus-within:border-[#702963] transition-colors">
+                  <label className="text-[11px] font-black text-gray-400 w-44 uppercase tracking-tighter">{field.label}</label>
+                  <input 
+                    type="text"
+                    name={field.name}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    className="bg-transparent outline-none flex-1 text-sm font-bold text-gray-800" 
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* DESCRIPTION ROW */}
+            <div className="md:col-span-2 flex items-start gap-4 mt-6">
+              <label className="text-[11px] font-black text-gray-400 w-32 pt-1 uppercase tracking-tighter">Description</label>
+              <textarea 
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Enter technical specifications or notes..."
+                className="flex-1 bg-transparent border-b border-gray-200 outline-none text-sm h-12 resize-none text-gray-700 placeholder:text-gray-300 focus:border-[#702963] transition-colors" 
+              />
+            </div>
           </div>
 
-          {/* Serial Number */}
-          <div>
-            <label className="label">Serial Number *</label>
-            <input
-              type="text"
-              name="serialNumber"
-              value={equipment.serialNumber}
-              onChange={handleChange}
-              placeholder="SN-001245"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-
-          {/* Category */}
-          <div>
-            <label className="label">Equipment Category *</label>
-            <select
-              name="category"
-              value={equipment.category}
-              onChange={handleChange}
-              className="select select-bordered w-full"
-              required
-            >
-              <option value="">Select category</option>
-              <option>Mechanical</option>
-              <option>Electrical</option>
-              <option>IT</option>
-            </select>
-          </div>
-
-          {/* Maintenance Team */}
-          <div>
-            <label className="label">Maintenance Team *</label>
-            <select
-              name="maintenanceTeam"
-              value={equipment.maintenanceTeam}
-              onChange={handleChange}
-              className="select select-bordered w-full"
-              required
-            >
-              <option value="">Select team</option>
-              <option>Mechanics</option>
-              <option>Electricians</option>
-              <option>IT Support</option>
-            </select>
-          </div>
-
-          {/* Default Technician */}
-          <div>
-            <label className="label">Default Technician</label>
-            <input
-              type="text"
-              name="technician"
-              value={equipment.technician}
-              onChange={handleChange}
-              placeholder="Assigned by default"
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Location */}
-          <div>
-            <label className="label">Location</label>
-            <input
-              type="text"
-              name="location"
-              value={equipment.location}
-              onChange={handleChange}
-              placeholder="Building / Floor / Room"
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Purchase Date */}
-          <div>
-            <label className="label">Purchase Date</label>
-            <input
-              type="date"
-              name="purchaseDate"
-              value={equipment.purchaseDate}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Warranty Date */}
-          <div>
-            <label className="label">Warranty Expiry</label>
-            <input
-              type="date"
-              name="warrantyDate"
-              value={equipment.warrantyDate}
-              onChange={handleChange}
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Status */}
-          <div className="md:col-span-2">
-            <label className="label">Equipment Status</label>
-            <select
-              name="status"
-              value={equipment.status}
-              onChange={handleChange}
-              className="select select-bordered w-full"
-            >
-              <option value="Active">Active</option>
-              <option value="Scrap">Scrap</option>
-            </select>
-          </div>
-
-          {/* ACTIONS */}
-          <div className="md:col-span-2 flex justify-end gap-3 pt-4 border-t">
-            <button
-              type="reset"
-              className="btn btn-ghost"
-              onClick={() =>
-                setEquipment({
-                  name: "",
-                  serialNumber: "",
-                  category: "",
-                  maintenanceTeam: "",
-                  technician: "",
-                  purchaseDate: "",
-                  warrantyDate: "",
-                  location: "",
-                  status: "Active",
-                })
-              }
-            >
-              Reset
-            </button>
-
-            <button
+          {/* SUBMIT BUTTON */}
+          <div className="mt-12 flex justify-end">
+            <button 
               type="submit"
-              disabled={!isFormValid}
-              className={`btn ${
-                isFormValid
-                  ? "btn-primary"
-                  : "btn-disabled"
-              }`}
+              disabled={isSubmitting}
+              className="flex items-center gap-3 px-10 py-4 bg-[#702963] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-purple-900/20 hover:bg-[#5a2150] active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
             >
-              Save Equipment
+              {isSubmitting ? (
+                <>
+                  <FiLoader className="animate-spin" /> Processing...
+                </>
+              ) : (
+                "Save Equipment"
+              )}
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
