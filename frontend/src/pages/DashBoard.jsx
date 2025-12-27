@@ -96,85 +96,11 @@ const DashBoard = () => {
     setOpenSubMenus(prev => ({ ...prev, [name]: !prev[name] }));
   };
 
-  const navItems = [
-    { name: "Home", path: "/", icon: <MdDashboard /> },
-    { 
-      name: "Equipment", path: "/equipment", icon: <MdLightbulb />,
-      subMenu: [{ name: "Add New", path: "/eq/add" }, { name: "View All", path: "/eq/all" }] 
-    },
-    { 
-      name: "Teams", path: "/teams", icon: <RiTeamFill />,
-      subMenu: [{ name: "My Team", path: "/t/my" }, { name: "Manage", path: "/t/man" }]
-    },
-    { name: "Requests", path: "/requests", icon: <FiCheckCircle /> },
-    { name: "Reports", path: "/reports", icon: <MdWorkspaces /> },
-  ];
+
 
   return (
     <div className="flex h-screen w-full bg-[#F3F4F6] text-[#111827] overflow-hidden font-sans antialiased">
       
-      {/* SIDEBAR */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-[110] w-64 bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 ease-in-out
-        md:relative md:translate-x-0 
-        ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
-      `}>
-        <div className="p-8 flex items-center justify-between">
-          <div className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-[#702963] flex items-center justify-center text-white">
-              <HiSparkles size={20} />
-            </div>
-            <p className="font-extrabold text-xl tracking-tight">HackFlow</p>
-          </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 text-gray-400">
-            <FiX size={24} />
-          </button>
-        </div>
-
-        <nav className="flex-1 px-4 space-y-1 overflow-y-auto">
-          <p className="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Operations</p>
-          {navItems.map((item) => (
-            <div key={item.name}>
-              {item.subMenu ? (
-                <div className="mb-1">
-                  <button onClick={() => toggleSubMenu(item.name)} className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl opacity-50">{item.icon}</span> {item.name}
-                    </div>
-                    <FiChevronRight className={`transition-transform ${openSubMenus[item.name] ? 'rotate-90 text-[#702963]' : ''}`} />
-                  </button>
-                  {openSubMenus[item.name] && (
-                    <div className="ml-9 mt-1 space-y-1 border-l-2 border-gray-100">
-                      {item.subMenu.map(sub => (
-                        <Link key={sub.name} to={sub.path} onClick={() => setIsSidebarOpen(false)} className="block px-6 py-2 text-xs font-bold text-gray-400 hover:text-[#702963]">{sub.name}</Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Link 
-                  to={item.path} 
-                  onClick={() => setIsSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all mb-1 ${location.pathname === item.path ? "bg-[#702963] text-white shadow-lg shadow-purple-900/10" : "text-gray-600 hover:bg-gray-50"}`}
-                >
-                  <span className="text-xl">{item.icon}</span> {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
-        </nav>
-
-        <div className="p-6 border-t border-gray-100">
-          <div className="bg-gray-50 rounded-2xl p-2 flex items-center gap-3 border border-gray-200">
-            <div className="w-10 h-10 rounded-xl bg-[#702963] flex items-center justify-center text-white font-black">M</div>
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-xs font-black text-[#111827] truncate">Mitchell Admin</p>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">System Lead</p>
-            </div>
-            <button className="p-2 text-gray-300 hover:text-red-500"><FiLogOut /></button>
-          </div>
-        </div>
-      </aside>
 
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#F9FAFB] h-full overflow-hidden">

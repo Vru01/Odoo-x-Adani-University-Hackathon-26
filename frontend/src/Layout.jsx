@@ -1,22 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-// Import your existing Sidebar/Navbar here
-// import Sidebar from "./components/Sidebar"; 
+import Sidebar from "./pages/Sidebar";
 
 const Layout = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="flex h-screen w-full bg-[#F3F4F6] overflow-hidden">
-      {/* Sidebar remains fixed on the left */}
-      {/* <Sidebar /> */}
-      
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Navbar could go here */}
-        
-        <main className="flex-1 overflow-y-auto">
-          {/* This is where DashBoard, EquipmentList, etc., will be rendered */}
-          <Outlet />
-        </main>
-      </div>
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+
+      <main className="flex-1 overflow-hidden">
+        <Outlet context={{ setIsSidebarOpen }} />
+      </main>
     </div>
   );
 };

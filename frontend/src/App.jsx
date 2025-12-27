@@ -15,6 +15,7 @@ import EquipmentTable from './pages/Equipment/EquipmentTable'
 import EquipmentCategory from './pages/Equipment/EquipmentCategory'
 import AdminDashboard from './pages/AdminDashboard'
 import RequestForm from './pages/RequestForm'
+import EditEquipment from './pages/Equipment/EditEquipment'
 
 function App() {
   const [count, setCount] = useState(0)

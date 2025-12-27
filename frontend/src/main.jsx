@@ -8,12 +8,21 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import Layout from "./Layout.jsx";
+
+// Dashboard & Pages
+import DashBoard from "./pages/DashBoard.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import TeamPage from "./pages/TeamPage.jsx";
+import WorkCenter from "./pages/WorkCenter.jsx";
+import RequestForm from "./pages/RequestForm.jsx";
+
+// Equipment Pages
+import EquipmentTable from "./pages/Equipment/EquipmentTable.jsx";
 import CreateEquipment from "./pages/Equipment/CreateEquipment.jsx";
 import EditEquipment from "./pages/Equipment/EditEquipment.jsx";
-import EquipmentList from "./pages/Equipment/EquipmentTable.jsx";
-import App from "./App.jsx";
-import { AuthProvider, AuthContext } from "./context/AuthContext.jsx";
+import EquipmentCategory from "./pages/Equipment/EquipmentCategory.jsx";
 
+import { AuthProvider, AuthContext } from "./context/AuthContext.jsx";
 
 /* 🔐 Protected Route */
 const ProtectedRoute = ({ children }) => {
@@ -34,7 +43,7 @@ createRoot(document.getElementById("root")).render(
         <AuthProvider>
           <Routes>
 
-            {/* 🔐 PROTECTED AREA */}
+            {/* 🔐 PROTECTED ROUTES */}
             <Route
               element={
                 <ProtectedRoute>
@@ -42,12 +51,27 @@ createRoot(document.getElementById("root")).render(
                 </ProtectedRoute>
               }
             >
-              <Route path="/" element={<App />} />
-              <Route path="/profile" element={<Profile />} />
+              {/* Dashboard */}
+              <Route path="/" element={<DashBoard />} />
+
+              {/* Equipment */}
+              <Route path="/equipment" element={<EquipmentTable />} />
               <Route path="/equipment/create" element={<CreateEquipment />} />
-              <Route path="/equipment" element={<EquipmentList />} />
-              <Route path="/equipment/edit" element={<EditEquipment />} />
-              
+              <Route path="/equipment/edit/:id" element={<EditEquipment />} />
+              <Route path="/equipment/categories" element={<EquipmentCategory />} />
+
+              {/* Teams & Work */}
+              <Route path="/teams" element={<TeamPage />} />
+              <Route path="/work-center" element={<WorkCenter />} />
+
+              {/* Requests */}
+              <Route path="/requests" element={<RequestForm />} />
+
+              {/* Profile */}
+              <Route path="/profile" element={<Profile />} />
+
+              {/* Admin */}
+              <Route path="/admin" element={<AdminDashboard />} />
             </Route>
 
             {/* 🌐 PUBLIC ROUTES */}
@@ -59,7 +83,6 @@ createRoot(document.getElementById("root")).render(
                 </PublicRoute>
               }
             />
-
             <Route
               path="/register"
               element={

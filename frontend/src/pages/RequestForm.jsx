@@ -14,20 +14,6 @@ const RequestForm = () => {
 
   return (
     <div className="flex h-screen w-full bg-[#F3F4F6] text-[#111827] overflow-hidden font-sans antialiased">
-      
-      {/* SIDEBAR (Preserving Theme Pattern) */}
-      <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
-        <div className="p-8 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#702963] flex items-center justify-center text-white">
-            <HiSparkles size={20} />
-          </div>
-          <p className="font-extrabold text-xl tracking-tight">HackFlow</p>
-        </div>
-        <nav className="flex-1 px-4 space-y-1">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50"><MdDashboard /> Dashboard</div>
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-[#702963] text-white shadow-lg"><FiTool /> Requests</div>
-        </nav>
-      </aside>
 
       {/* MAIN CONTENT */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#F9FAFB] h-full overflow-hidden">
