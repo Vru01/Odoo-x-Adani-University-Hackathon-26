@@ -9,6 +9,9 @@ import Register from "./pages/Register.jsx";
 import Profile from "./pages/Profile.jsx";
 import Layout from "./Layout.jsx";
 import CreateEquipment from "./pages/Equipment/CreateEquipment.jsx";
+import EditEquipment from "./pages/Equipment/EditEquipment.jsx";
+import EquipmentList from "./pages/Equipment/EquipmentTable.jsx";
+import App from "./App.jsx";
 
 import { AuthProvider, AuthContext } from "./context/AuthContext.jsx";
 
@@ -39,8 +42,12 @@ createRoot(document.getElementById("root")).render(
                 </ProtectedRoute>
               }
             >
-              <Route path="/" element={<CreateEquipment />} />
+              <Route path="/" element={<App />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/equipment/create" element={<CreateEquipment />} />
+              <Route path="/equipment" element={<EquipmentList />} />
+              <Route path="/equipment/edit" element={<EditEquipment />} />
+              
             </Route>
 
             {/* 🌐 PUBLIC ROUTES */}
