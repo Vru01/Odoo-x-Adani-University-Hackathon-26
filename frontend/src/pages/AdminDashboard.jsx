@@ -134,7 +134,7 @@ const AdminDashboard = () => {
       {isSidebarOpen && <div className="fixed inset-0 bg-black/20 z-[100] md:hidden backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />}
       <aside className={`fixed inset-y-0 left-0 z-[110] w-72 bg-white border-r border-gray-200 flex flex-col transition-transform duration-300 ease-out shadow-2xl md:shadow-none md:relative md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-8 flex items-center justify-between">
-          <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-[#702963] flex items-center justify-center text-white shadow-lg shadow-purple-900/20"><HiSparkles size={20} /></div><p className="font-extrabold text-xl tracking-tight text-gray-900">HackFlow</p></div>
+          <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-[#702963] flex items-center justify-center text-white shadow-lg shadow-purple-900/20"><HiSparkles size={20} /></div><p className="font-extrabold text-xl tracking-tight text-gray-900">Track It!</p></div>
           <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 text-gray-400 hover:text-gray-600"><FiX size={24} /></button>
         </div>
         <nav className="flex-1 px-4 overflow-y-auto scrollbar-hide space-y-2">
